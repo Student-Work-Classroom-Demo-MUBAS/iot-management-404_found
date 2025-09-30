@@ -34,3 +34,20 @@ body {
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
+.clock {
+  grid-row: span 2; /* make clock taller */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.clock h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+.clock p {
+  margin: 5px 0;
+  font-size: 18px;
+}
