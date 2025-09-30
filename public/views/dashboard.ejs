@@ -20,4 +20,38 @@
         <p>Temperature</p>
       </div>
     </div>
-    
+    <!-- Sensors aligned to the right -->
+    <div class="card sensor">
+      <div class="icon"><i class="fas fa-thermometer-half"></i></div>
+      <p>Temperature & Humidity</p>
+      <button class="status-btn"><i class="fas fa-power-off"></i></button>
+    </div>
+    <div class="card sensor">
+      <div class="icon"><i class="fas fa-lightbulb"></i></div>
+      <p>Light Sensor</p>
+      <button class="status-btn"><i class="fas fa-power-off"></i></button>
+    </div>
+    <div class="card sensor">
+      <div class="icon"><i class="fas fa-wind"></i></div>
+      <p>Air Quality Sensor</p>
+      <button class="status-btn"><i class="fas fa-power-off"></i></button>
+    </div>
+
+    <!-- Humidity -->
+    <div class="card">
+      <h2>16%</h2>
+      <p>Humidity</p>
+    </div>
+
+    <!-- Air Quality -->
+    <div class="card">
+      <h2>16 AQI</h2>
+      <p>Air quality</p>
+    </div>
+
+    <!-- Power Usage Chart -->
+    <div class="card chart">
+      <div class="chart-title">Power usage</div>
+      <canvas id="powerChart"></canvas>
+    </div>
+  </div>
