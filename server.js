@@ -1,22 +1,15 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = 3000;
 
-// Set EJS as the view engine
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-// Tell Express where to find the .ejs files (inside public/views)
-app.set('views', path.join(__dirname, 'public', 'views'));
+// Serve static files from "public"
+app.use(express.static('public'));
 
-// Serve static files from /public
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Routes
 app.get('/', (req, res) => {
-    res.render('dashboard'); // Looks for dashboard.ejs inside /public/views/
+  res.render('dashboard');
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+app.listen(3000, () => console.log('Server running at http://localhost:3000'));

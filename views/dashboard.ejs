@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IoT Dashboard</title>
+
+  <!-- Link CSS -->
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard">
+
+    <header>
+      <p>Welcome Home</p>
+      <div class="time-container">
+        <span id="time"></span> | <span id="date"></span>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Smart Light Card -->
+      <div class="card light">
+        <img src="/images/light.png" class="card-icon" alt="Light Icon">
+        <h2>Smart Light</h2>
+        <div class="brightness">
+          <span id="brightness-value">64%</span>
+          <input type="range" id="brightness-slider" min="0" max="100" value="64">
+        </div>
+      </div>
+
+      <!-- Temperature Card -->
+      <div class="card temperature">
+        <img src="/images/temp.png" class="card-icon" alt="Temperature Icon">
+        <h2>Home Temperature</h2>
+        <div class="temp-display">
+          <span id="temperature">24°C</span>
+          <canvas id="tempChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Power Usage Chart -->
+      <div class="card chart">
+        <img src="/images/power.png" class="card-icon" alt="Power Icon">
+        <h2>Power Usage</h2>
+        <div class="chart-container">
+          <canvas id="powerChart"></canvas>
+        </div>
+      </div>
+
+      <!-- WiFi / Info -->
+      <div class="card info">
+        <img src="/images/wifi.png" class="card-icon" alt="WiFi Icon">
+        <h2>Network</h2>
+        <p>Wi-Fi: <strong>RTA56-728869</strong></p>
+        <p>Status: <span class="status">Connected</span></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>
