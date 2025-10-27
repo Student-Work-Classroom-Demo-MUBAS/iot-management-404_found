@@ -1,60 +1,47 @@
-// Clock updater
-function updateClock() {
+// TIME + DATE
+function updateTime() {
   const now = new Date();
-  const time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  const date = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric'});
-  document.getElementById('time').textContent = time;
-  document.getElementById('date').textContent = date;
+  document.getElementById("time").textContent =
+    now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  document.getElementById("date").textContent = now.toLocaleDateString();
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateTime, 1000);
+updateTime();
 
-// Brightness slider
-const slider = document.getElementById('brightness-slider');
-const valueDisplay = document.getElementById('brightness-value');
-slider.addEventListener('input', () => {
-  valueDisplay.textContent = `${slider.value}%`;
-});
+// AIR QUALITY SIMULATION (Replace later with real ESP32 data)
+const airValue = document.getElementById("air-value");
+setInterval(() => {
+  const randomAirQ = Math.floor(Math.random() * 400);
+  airValue.textContent = randomAirQ + " AQI";
+}, 2000);
 
-// Temperature chart (simple gauge)
-const tempCtx = document.getElementById('tempChart').getContext('2d');
-new Chart(tempCtx, {
-  type: 'doughnut',
-  data: {
-    datasets: [{
-      data: [24, 6],
-      backgroundColor: ['#ffb347', '#333'],
-      cutout: '80%',
-    }]
-  },
-  options: {
-    plugins: { legend: { display: false } }
-  }
-});
+// CHART
+window.addEventListener("load", () => {
+  const ctx = document.getElementById("powerChart").getContext("2d");
 
-// Power usage chart
-const ctx = document.getElementById('powerChart').getContext('2d');
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-    datasets: [{
-      label: 'Power Usage (kWh)',
-      data: [10, 12, 8, 20, 15, 18, 12],
-      borderColor: '#ff7b00',
-      tension: 0.4,
-      pointBackgroundColor: '#fff',
-      pointRadius: 4,
-      fill: true,
-      backgroundColor: 'rgba(255,123,0,0.2)',
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { beginAtZero: true, grid: { color: '#555' }, ticks: { color: '#ccc' } },
-      x: { grid: { color: '#555' }, ticks: { color: '#ccc' } }
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["12AM", "3AM", "6AM", "9AM", "12PM", "3PM", "6PM", "9PM"],
+      datasets: [{
+        label: "Power (kWh)",
+        data: [2, 3, 2.5, 4, 3.8, 4.2, 3.5, 2.8],
+        borderColor: "#fff",
+        backgroundColor: "rgba(255,255,255,0.18)",
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: "#fff"
+      }]
+    },
+    options: {
+      scales: {
+        x: { ticks: { color: "#fff" } },
+        y: { ticks: { color: "#fff" } }
+      },
+      plugins: {
+        legend: { labels: { color: "#fff" } }
+      }
     }
-  }
+  });
 });

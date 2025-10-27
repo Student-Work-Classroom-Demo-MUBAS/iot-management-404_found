@@ -5,66 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IoT Dashboard</title>
 
-  <!-- Link CSS -->
   <link rel="stylesheet" href="/style.css" />
-
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="dashboard">
-
     <header>
       <p>Welcome Home</p>
-      <div class="time-container">
-        <span id="time"></span> | <span id="date"></span>
-      </div>
     </header>
 
     <div class="container">
-      <!-- Smart Light Card -->
-      <div class="card light">
-        <img src="/images/light.png" class="card-icon" alt="Light Icon">
-        <h2>Smart Light</h2>
-        <div class="brightness">
-          <span id="brightness-value">64%</span>
-          <input type="range" id="brightness-slider" min="0" max="100" value="64">
+
+      <!-- Time Card -->
+      <div class="card time-card">
+        <div class="time-section">
+          <h2 id="time">--:--</h2>
+          <p id="date">--/--/----</p>
         </div>
       </div>
 
-      <!-- Temperature Card -->
-      <div class="card temperature">
-        <img src="/images/temp.png" class="card-icon" alt="Temperature Icon">
-        <h2>Home Temperature</h2>
-        <div class="temp-display">
-          <span id="temperature">24°C</span>
-          <canvas id="tempChart"></canvas>
+      <!-- Air Quality Card -->
+      <div class="card airquality">
+        <img src="/images/air.jpeg" class="card-img" alt="Air Quality">
+        <h2>Air Quality</h2>
+        <div class="air-display">
+          <span id="air-value">0 AQI</span>
         </div>
       </div>
 
       <!-- Power Usage Chart -->
-      <div class="card chart">
-        <img src="/images/power.png" class="card-icon" alt="Power Icon">
+      <div class="card power">
+        <img src="/images/light-bg.jpg" class="card-img" alt="Power Usage">
         <h2>Power Usage</h2>
         <div class="chart-container">
           <canvas id="powerChart"></canvas>
         </div>
       </div>
 
-      <!-- WiFi / Info -->
-      <div class="card info">
-        <img src="/images/wifi.png" class="card-icon" alt="WiFi Icon">
-        <h2>Network</h2>
-        <p>Wi-Fi: <strong>RTA56-728869</strong></p>
-        <p>Status: <span class="status">Connected</span></p>
+      <!-- Humidity -->
+      <div class="card humidity">
+        <img src="/images/humidity.jpeg" class="card-img" alt="Humidity">
+        <h2>Humidity</h2>
+        <div class="humidity-display">
+          <span id="humidity">48%</span>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 
-  <script src="/js/script.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
