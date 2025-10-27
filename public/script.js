@@ -15,6 +15,15 @@ setInterval(() => {
   airValue.textContent = randomAirQ + " AQI";
 }, 2000);
 
+// TEMPERATURE SIMULATION (for both cards)
+const tempValue = document.getElementById("temp-value");
+const nestedTemp = document.getElementById("nested-temp-value");
+setInterval(() => {
+  const randomTemp = (20 + Math.random() * 10).toFixed(1);
+  tempValue.textContent = `${randomTemp}°C`;
+  nestedTemp.textContent = `${randomTemp}°C`;
+}, 2000);
+
 // CHART
 window.addEventListener("load", () => {
   const ctx = document.getElementById("powerChart").getContext("2d");
