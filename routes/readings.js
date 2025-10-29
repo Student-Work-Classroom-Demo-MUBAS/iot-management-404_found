@@ -8,11 +8,13 @@ const authenticateToken = require('../middleware/authMiddleware');
  * /api/readings:
  *   get:
  *     summary: Get all sensor readings
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of sensor readings
  */
-router.get('get-all/', authenticateToken, async (req, res) => {
+router.get('/get-all', authenticateToken, async (req, res) => {
   const [rows] = await pool.query(`
     SELECT sr.id, sr.sensor_id, s.sensor_name, s.sensor_type, sr.reading_value, sr.timestamp
     FROM sensor_readings sr
@@ -27,11 +29,13 @@ router.get('get-all/', authenticateToken, async (req, res) => {
  * /api/readings/latest:
  *   get:
  *     summary: Get the latest reading for each sensor
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Latest readings
  */
-router.get('/latest',authenticateToken, async (req, res) => {
+router.get('/latest', authenticateToken, async (req, res) => {
   const [rows] = await pool.query(`
     SELECT sr.id, sr.sensor_id, s.sensor_name, s.sensor_type, sr.reading_value, sr.timestamp
     FROM sensor_readings sr
