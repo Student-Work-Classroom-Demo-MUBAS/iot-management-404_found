@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cogie Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* LEFT SIDE */
+    .left {
+      flex: 1;
+        background: url('assets/login_image_2.jpg') no-repeat center center;
+        background-size: cover;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 40px;
+        margin: 8px;
+        
+        /* Rounded corners only on the right */
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
+         border-top-left-radius: 16px;
+        border-bottom-left-radius: 16px;
+        overflow: hidden; /* important to clip the background image */
+    }
+
+    .text-container {
+     /* background: rgba(0, 0, 0, 0.1);  dark translucent background */
+      /* backdrop-filter: blur(8px);  */
+      -webkit-backdrop-filter: blur(8px); /* for Safari */
+      padding: 20px 30px;
+      border-radius: 15px;
+      color: white;
+      text-align: center;
+      max-width: 350px;
+      /* box-shadow: 0 8px 20px rgba(0,0,0,0.4); */
+    }
+
+    .text-container h1 {
+      font-size: 28px; /* smaller heading */
+      margin: 0 0 10px 0;
+      line-height: 1.2;
+    }
+
+    .text-container p {
+      font-size: 14px; /* smaller paragraph */
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* RIGHT SIDE */
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+    }
+
+    .form-container {
+      width: 300px;
+    }
+
+    /* WELCOME TEXT */
+    .form-container h2 {
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 28px;
+      color: #333;
+    }
+
+    input[type="email"],
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #333;
+    }
+
+    .bottom-text {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .bottom-text a {
+      color: blue;
+      text-decoration: none;
+    }
+
+    .checkbox-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .checkbox-forgot input {
+      margin-right: 5px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- LEFT SIDE -->
+  <div class="left">
+    <div class="text-container">
+      <h1>Smart Living Made Easy</h1>
+      <p>Control your home, monitor devices, and stay connected from anywhere.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="right">
+    <div class="form-container">
+      <h2>Welcome Back</h2>
+      <form id="loginForm" action="/api/auth/login" method="POST">
+        <input type="text" placeholder="Username" name="username" required />
+        <input type="password" placeholder="Password" name="password" required />
+        <div class="checkbox-forgot">
+          <label><input type="checkbox" /> Remember me</label>
+          <a href="#">Forgot Password</a>
+        </div>
+        <button type="submit">Sign In</button>
+        <div class="bottom-text">
+          Don’t have an account? <a href="/signup">Sign Up</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
