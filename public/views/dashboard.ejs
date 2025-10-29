@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+    <!-- Time, Date, and Temperature (big card) -->
+    <div class="card clock">
+      <h1 id="time">12:37</h1>
+      <p id="date">12 September 2025</p>
+      <div class="temp-box">
+        <h2>29°C</h2>
+        <p>Temperature</p>
+      </div>
+    </div>
+    <!-- Sensors aligned to the right -->
+    <div class="card sensor">
+      <div class="icon"><i class="fas fa-thermometer-half"></i></div>
+      <p>Temperature & Humidity</p>
+      <button class="status-btn"><i class="fas fa-power-off"></i></button>
+    </div>
+    
+    <div class="card sensor">
+      <div class="icon"><i class="fas fa-wind"></i></div>
+      <p>Air Quality Sensor</p>
+      <button class="status-btn"><i class="fas fa-power-off"></i></button>
+    </div>
+
+    <!-- Humidity -->
+    <div class="card">
+      <h2>16%</h2>
+      <p>Humidity</p>
+    </div>
+
+    <!-- Air Quality -->
+    <div class="card">
+      <h2>16 AQI</h2>
+      <p>Air quality</p>
+    </div>
+
+    <!-- Power Usage Chart -->
+    <div class="card chart">
+      <div class="chart-title">Power usage</div>
+      <canvas id="powerChart"></canvas>
+    </div>
+  </div>
+  <!-- Navigation -->
+  <div class="nav">
+    <a href="#" class="active">Home</a>
+    <a href="#">History</a>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>
+
+ 
