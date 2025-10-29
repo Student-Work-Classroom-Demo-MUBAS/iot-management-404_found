@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../util/db');
+const authenticateToken = require('../middleware/authMiddleware');
 
 /**
  * @swagger
@@ -11,8 +12,8 @@ const pool = require('../util/db');
  *       200:
  *         description: List of sensor readings
  */
-router.get('/', async (req, res) => {
-  const [rows] = await db.query(`
+router.get('get-all/', authenticateToken, async (req, res) => {
+  const [rows] = await pool.query(`
     SELECT sr.id, sr.sensor_id, s.sensor_name, s.sensor_type, sr.reading_value, sr.timestamp
     FROM sensor_readings sr
     JOIN sensors s ON sr.sensor_id = s.id
@@ -30,8 +31,8 @@ router.get('/', async (req, res) => {
  *       200:
  *         description: Latest readings
  */
-router.get('/latest', async (req, res) => {
-  const [rows] = await db.query(`
+router.get('/latest',authenticateToken, async (req, res) => {
+  const [rows] = await pool.query(`
     SELECT sr.id, sr.sensor_id, s.sensor_name, s.sensor_type, sr.reading_value, sr.timestamp
     FROM sensor_readings sr
     JOIN sensors s ON sr.sensor_id = s.id
@@ -67,12 +68,13 @@ router.get('/latest', async (req, res) => {
  *         description: Reading added
  */
 router.post('/', async (req, res) => {
+     console.log('Received data:', req.body);
   const { sensor_id, reading_value } = req.body;
   if (!sensor_id || reading_value === undefined) {
     return res.status(400).json({ error: 'sensor_id and reading_value are required' });
   }
 
-  await db.query(
+  await pool.query(
     'INSERT INTO sensor_readings (sensor_id, reading_value) VALUES (?, ?)',
     [sensor_id, reading_value]
   );
