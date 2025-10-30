@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Home Dashboard</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+        margin: 0;
+        padding: 0;
+        color: white;
+        background: url('assets/login_image_2.jpg') no-repeat center center;
+        background-size: cover;
+    }
+
+    .dashboard {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 15px;
+        padding: 20px;
+    }
+
+    .card {
+        background: rgba(100, 100, 100, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .card h1 {
+        margin: 0;
+        font-size: 2em;
+    }
+
+    .card h2 {
+        margin: 5px 0 0;
+        font-size: 1em;
+        font-weight: normal;
+    }
+
+    .sensor-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .sensor-button {
+        flex: 1;
+        background: rgba(100,100,100,0.2);
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .sensor-button .power {
+        margin-top: 10px;
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        background: #00ff00;
+        border-radius: 50%;
+    }
+
+    .chart-card {
+        grid-column: span 2;
+        background: rgba(100, 100, 100, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 50px;
+    }
+
+    .nav button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 12px;
+        background: rgba(100,100,100,0.2);
+        cursor: pointer;
+    }
+
+    .nav button.active {
+        background: #555;
+        color: white;
+    }
+
+    /* History cards */
+    .history-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .history-card {
+        background: rgba(100, 100, 100, 0.2);
+        border-radius: 12px;
+        padding: 15px;
+        width: 200px;
+        backdrop-filter: blur(10px);
+    }
+
+</style>
+</head>
+<body>
+
+<div id="homePage">
+    <div class="dashboard">
+        <div class="card">
+            <h1 id="clock">12:37</h1>
+            <h2 id="date">12 September 2025</h2>
+        </div>
+        <div class="card">
+            <h1 id="temperatureValue">29°C</h1>
+            <h2>Temperature</h2>
+        </div>
+        <div class="sensor-buttons">
+            <div class="sensor-button">
+                <h2>Temperature</h2>
+                <div class="power"></div>
+            </div>
+            <div class="sensor-button">
+                <h2>Humidity</h2>
+                <div class="power"></div>
+            </div>
+            <div class="sensor-button">
+                <h2>Air quality sensor</h2>
+                <div class="power"></div>
+            </div>
+        </div>
+        <div class="card">
+            <h1 id="humidityValue">16%</h1>
+            <h2>Humidity</h2>
+        </div>
+        <div class="card">
+            <h1 id="airQualityValue">16 AQI</h1>
+            <h2>Air quality</h2>
+        </div>
+        <div class="chart-card">
+            <h2>Power usage (random)</h2>
+            <canvas id="powerChart" width="400" height="150"></canvas>
+        </div>
+    </div>
+
+    <div class="nav">
+        <button id="homeBtn" class="active">Home</button>
+        <button id="historyBtn">History</button>
+    </div>
+</div>
+
+<div id="historyPage" style="display:none;">
+    <div class="history-container" id="historyContainer">
+        <!-- History cards will be injected here -->
+    </div>
+    <div class="nav">
+        <button id="homeBtn2">Home</button>
+        <button id="historyBtn2" class="active">History</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// const pool = require('../util/db');
+let readings = [];
+
+function updateClock() {
+    const now = new Date();
+    const time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const date = now.toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+    document.getElementById('clock').textContent = time;
+    document.getElementById('date').textContent = date;
+}
+setInterval(updateClock, 1000);
+
+// Generate random sensor values
+function updateSensors() {
+    console.log('Updated sensor values:');
+
+    const temp = (20 + Math.random() * 10).toFixed(1);
+    const hum = Math.floor(10 + Math.random() * 50);
+    const aqi = Math.floor(10 + Math.random() * 100);
+
+    document.getElementById('temperatureValue').textContent = temp + '°C';
+    document.getElementById('humidityValue').textContent = hum + '%';
+    document.getElementById('airQualityValue').textContent = aqi + ' AQI';
+
+    // Save to readings history
+    // readings.push({time: new Date().toLocaleString(), temperature: temp, humidity: hum, aqi: aqi});
+}
+// setInterval(updateSensors, 3000);
+
+  async function fetchLatest() {
+    // console.log('Updated sensor values:');
+
+    const res =  await fetch('http://localhost:3000/api/readings/latest', {
+    //   headers: { Authorization: 'Bearer YOUR_TOKEN' }
+    });
+    // document.getElementById('temperatureValue').textContent = 100 + '°C';
+
+    const data =  await res.json();
+    // console.log('Updated sensor values:', data);
+
+    // const temp = data.find(r => r.sensor_id === 'temperature-sensor-001')?.reading_value;
+    // const hum = data.find(r => r.sensor_id === 'humidity-sensor-002')?.reading_value;
+    // const aqi = data.find(r => r.sensor_id === 'AirQuality-sensor-002')?.reading_value;
+
+    let temp;
+    let hum;
+    let aqi;
+    data.forEach(reading => {
+  if (reading.sensor_id.includes('temperature')) {
+    temp = reading.reading_value;
+  } else if (reading.sensor_id.includes('humidity')) {
+    hum = reading.reading_value;
+  } else if (reading.sensor_id.toLowerCase().includes('airquality')) {
+    aqi = reading.reading_value;
+  }
+});
+
+   
+
+    document.getElementById('temperatureValue').textContent = temp + '°C';
+    document.getElementById('humidityValue').textContent = hum + '%';
+    document.getElementById('airQualityValue').textContent = aqi + ' AQI';
+    console.log('Updated sensor values:', {temp, hum, aqi});
+  }
+
+  setInterval(fetchLatest, 2000);
+
+
+// Chart.js Power usage chart
+const ctx = document.getElementById('powerChart').getContext('2d');
+const powerData = Array.from({length:7}, () => Math.floor(Math.random()*100));
+const powerChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul'],
+        datasets: [{
+            label: 'Power usage',
+            data: powerData,
+            borderColor: 'orange',
+            backgroundColor: 'rgba(255,165,0,0.2)',
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive:true,
+        plugins: {legend: {display: false}}
+    }
+});
+
+// Navigation
+const homePage = document.getElementById('homePage');
+const historyPage = document.getElementById('historyPage');
+const historyContainer = document.getElementById('historyContainer');
+
+async function showHistory() {
+
+     const res =  await fetch('http://localhost:3000/api/readings/get-all', {
+    //   headers: { Authorization: 'Bearer YOUR_TOKEN' }
+    });
+    // document.getElementById('temperatureValue').textContent = 100 + '°C';
+
+    const data =  await res.json();
+    homePage.style.display = 'none';
+    historyPage.style.display = 'block';
+    historyContainer.innerHTML = '';
+    data.slice().reverse().forEach(r => {
+        let valueLabel = '';
+        let label ='';
+        if (r.sensor_id.includes('temperature')) {
+    valueLabel = r.reading_value + '°C';
+    label = 'Temperature';
+  } else if (r.sensor_id.includes('humidity')) {
+
+    valueLabel = r.reading_value + '%';
+    label = 'Humidity';
+  } else if (r.sensor_id.toLowerCase().includes('airquality')) {
+    valueLabel = r.reading_value + ' AQI';
+    label = 'Air Quality';  
+  }
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        card.innerHTML = `
+            <strong>${r.timestamp}</strong><br>
+            Sensor: ${r.sensor_id}<br>
+            ${label}: ${valueLabel}
+        `;
+        historyContainer.appendChild(card);
+    });
+}
+
+function showHome() {
+    historyPage.style.display = 'none';
+    homePage.style.display = 'block';
+}
+
+document.getElementById('historyBtn').onclick = showHistory;
+document.getElementById('historyBtn2').onclick = showHistory;
+document.getElementById('homeBtn').onclick = showHome;
+document.getElementById('homeBtn2').onclick = showHome;
+
+</script>
+</body>
+</html>

@@ -5,20 +5,16 @@ const authenticateToken = require('../middleware/authMiddleware');
 
 /**
  * @swagger
- * /api/readings:
+ * /api/readings/get-all:
  *   get:
  *     summary: Get all sensor readings
  *     responses:
  *       200:
  *         description: List of sensor readings
  */
-router.get('get-all/', authenticateToken, async (req, res) => {
-  const [rows] = await pool.query(`
-    SELECT sr.id, sr.sensor_id, s.sensor_name, s.sensor_type, sr.reading_value, sr.timestamp
-    FROM sensor_readings sr
-    JOIN sensors s ON sr.sensor_id = s.id
-    ORDER BY sr.timestamp DESC
-  `);
+router.get('/get-all', async (req, res) => {
+   const [rows] = await pool.query('SELECT * FROM sensor_readings ORDER BY timestamp DESC');
+
   res.json(rows);
 });
 
@@ -31,19 +27,14 @@ router.get('get-all/', authenticateToken, async (req, res) => {
  *       200:
  *         description: Latest readings
  */
-router.get('/latest',authenticateToken, async (req, res) => {
-  const [rows] = await pool.query(`
-    SELECT sr.id, sr.sensor_id, s.sensor_name, s.sensor_type, sr.reading_value, sr.timestamp
-    FROM sensor_readings sr
-    JOIN sensors s ON sr.sensor_id = s.id
-    INNER JOIN (
-      SELECT sensor_id, MAX(timestamp) AS latest
-      FROM sensor_readings
-      GROUP BY sensor_id
-    ) latest_readings
-    ON sr.sensor_id = latest_readings.sensor_id AND sr.timestamp = latest_readings.latest
-    ORDER BY sr.timestamp DESC
+router.get('/latest', async (req, res) => {
+ const [rows] = await pool.query(`
+    SELECT * FROM sensor_readings
+    ORDER BY timestamp DESC
+    LIMIT 3;
   `);
+
+  console.log('Latest readings fetched:', rows);
   res.json(rows);
 });
 
