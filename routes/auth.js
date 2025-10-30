@@ -48,11 +48,12 @@ router.post('/register', async (req, res) => {
       [username, email, hashed]
     );
 
-    res.status(201).json({ message: 'User registered successfully' });
+    // res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Database error' });
   }
+   res.redirect('/dashboard');
 });
 
 /**
@@ -94,13 +95,15 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id, username: user.username }, 'secretkey', { expiresIn: '1h' });
-    res.json({ token });
-    localStorage.setItem('token', token);
-    console.log("token", token);
+    // const token = jwt.sign({ id: user.id, username: user.username }, 'secretkey', { expiresIn: '1h' });
+    // res.json({ token });
+    // localStorage.setItem('token', token);
+    // console.log("token", token);
   } catch (err) {
     res.status(500).json({ message: 'Login error' });
   }
+
+  res.redirect('/dashboard');
 });
 
 /**
@@ -209,6 +212,10 @@ router.post('/profile-token', async (req, res) => {
     res.status(401).json({ message: 'Invalid token' });
   }
 });
+
+
+
+
 
 module.exports = router;
 

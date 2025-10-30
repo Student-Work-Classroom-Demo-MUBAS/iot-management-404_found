@@ -36,5 +36,9 @@ app.post('/api/sensor', (req, res) => {
   res.sendStatus(200);
 });
 
+app.get("/dashboard", (req, res) => {
+
+ res.sendFile(__dirname + '/public/dashboard.html'); // 
+});
 
 app.listen(3000, () => console.log('Server running on port 3000'));

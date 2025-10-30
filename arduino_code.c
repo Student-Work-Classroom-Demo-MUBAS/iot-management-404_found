@@ -2,26 +2,31 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
 // Define the GPIO pin where the DHT11 data pin is connected
 #define DHTPIN 4  // You can change this to any digital pin
-
+#define ONE_WIRE_BUS 6
 #define mq3Pin 8
 // Define the type of DHT sensor
 #define DHTTYPE DHT11
 
+OneWire oneWire(ONE_WIRE_BUS);
 
+// Pass oneWire reference to DallasTemperature library
+DallasTemperature sensors(&oneWire);
 
 // Initialize the DHT sensor
 DHT dht(4, DHTTYPE);
 const char* ssid = "iPhone 13";
 const char* password = "fyabupim";
-const char* serverUrl = "http://172.20.10.4:3000/api/sensor"; 
+const char* serverUrl = "http://172.20.10.4:3000/api/readings/"; 
 
 // Assign unique IDs to each sensor
 const char* dhtId = "sensor-dht-001";
 const char* airQualityId = "sensor-air-002";
+
 
 
 void setup() {
@@ -53,11 +58,15 @@ void setup() {
 
 void loop() {
   // Wait a few seconds between measurements
-  delay(5000);
+  delay(000);
 
   // Read humidity and temperature
   float humidity = dht.readHumidity();
-  float temperature = dht.readTemperature(); // Celsius by default
+  // float DHT11temperature = dht.readTemperature(); // Celsius by default
+
+
+  sensors.requestTemperatures(); // Send command to get temperatures
+  float temperature = sensors.getTempCByIndex(0);
 
   // Check if any reads failed
   if (isnan(humidity) || isnan(temperature)) {
